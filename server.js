@@ -7,8 +7,11 @@
  * https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow
  */
 
-var express = require('express'); // Express web server framework
+var express = require("express");
+
+var PORT = process.env.PORT || 8000;
 var app = express();
-app.use(express.static(__dirname + '/public'));
-console.log('Listening on 8888');
-app.listen(8888);
+app.use(express.static(__dirname + "/public"));
+app.listen(PORT, function() {
+  console.log("Listening on port:%s", PORT);
+});
