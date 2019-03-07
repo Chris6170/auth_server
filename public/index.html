@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Implicit Grant flow with Spotify</title>
+    <title>Ichos</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -15,12 +15,11 @@
       }
     </style>
   </head>
-
   <body>
     <div class="container">
       <div id="login">
-        <h1>This is an example of the Implicit Grant flow</h1>
-        <button id="login-button">Log in with Spotify</button>
+        <!-- <h1>This is an example of the Implicit Grant flow</h1> -->
+        <button style="background-color: palevioletred; color: white; margin: 20px; top: 5%; left: 50%; border-radius: 12px; padding: 10px; border-style: none"  id="login-button">Log in with Spotify</button>
       </div>
       <div id="loggedin">
         <div id="user-profile">
@@ -29,7 +28,6 @@
         </div>
       </div>
     </div>
-
     <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>Logged in as {{display_name}}</h1>
       <div class="media">
@@ -49,22 +47,18 @@
         </div>
       </div>
     </script>
-
     <script id="oauth-template" type="text/x-handlebars-template">
       <h2>oAuth info</h2>
       <dl class="dl-horizontal">
         <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
       </dl>
     </script>
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script>
       (function() {
-
         var stateKey = 'spotify_auth_state';
-
         /**
          * Obtains parameters from the hash of the URL
          * @return Object
@@ -78,7 +72,6 @@
           }
           return hashParams;
         }
-
         /**
          * Generates a random string containing numbers and letters
          * @param  {number} length The length of the string
@@ -87,27 +80,21 @@
         function generateRandomString(length) {
           var text = '';
           var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
           for (var i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
           }
           return text;
         };
-
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
-
             oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
-
         var params = getHashParams();
-
         var access_token = params.access_token,
             state = params.state,
             storedState = localStorage.getItem(stateKey);
-
         if (access_token && (state == null || state !== storedState)) {
           alert('There was an error during the authentication');
         } else {
@@ -122,7 +109,6 @@
                 success: function(response) {
                   
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-
                   $('#login').hide();
                   $('#loggedin').show();
                 }
@@ -131,24 +117,18 @@
               $('#login').show();
               $('#loggedin').hide();
           }
-
           document.getElementById('login-button').addEventListener('click', function() {
-
             var client_id = '676c62e0383d44bd85746e1bd0219f1a'; // Your client id
             var redirect_uri = 'https://metemano.herokuapp.com/'; // Your redirect uri
-
             var state = generateRandomString(16);
-
             localStorage.setItem(stateKey, state);
             var scope = 'playlist-modify-private playlist-modify-public user-library-modify';
-
             var url = 'https://accounts.spotify.com/authorize';
             url += '?response_type=token';
             url += '&client_id=' + encodeURIComponent(client_id);
             url += '&scope=' + encodeURIComponent(scope);
             url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
             url += '&state=' + encodeURIComponent(state);
-
             window.location = url;
           }, false);
         }
